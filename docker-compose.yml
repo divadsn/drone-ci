@@ -9,7 +9,6 @@ services:
       - 9000
     volumes:
       - ./data:/var/lib/drone/
-      - /etc/localtime:/etc/localtime:ro
     restart: always
     environment:
       - DRONE_OPEN=true
