@@ -71,6 +71,9 @@ HTTP_BIND=127.0.0.1
 # Your timezone
 TZ=${TZ}
 
+# Fixed project name
+COMPOSE_PROJECT_NAME=drone-ci
+
 EOF
 
 # Create data directory for the sqlite database
