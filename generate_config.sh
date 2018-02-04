@@ -21,20 +21,6 @@ if [ -z "$DRONE_HOST" ]; then
   read -p "Hostname: " -ei "http://ci.example.org" DRONE_HOST
 fi
 
-if [[ -a /etc/timezone ]]; then
-  TZ=$(cat /etc/timezone)
-elif  [[ -a /etc/localtime ]]; then
-  TZ=$(readlink /etc/localtime|sed -n 's|^.*zoneinfo/||p')
-fi
-
-if [ -z "$TZ" ]; then
-  echo "For correctly displayed timestamps you need to provide the timezone of the server."
-  read -p "Timezone: " -ei "Europe/Berlin" TZ
-else
-  echo "Your server seems to be in ${TZ}, is that right?"
-  read -p "Timezone: " -ei ${TZ} TZ
-fi
-
 echo "----------------------------"
 echo "     GitHub OAuth Setup     "
 echo "----------------------------"
@@ -67,9 +53,6 @@ DRONE_SECRET=$(</dev/urandom tr -dc A-Za-z0-9 | head -c 28)
 # You should use HTTPS behind a proxy using NGINX or Apache2
 HTTP_PORT=8008
 HTTP_BIND=127.0.0.1
-
-# Your timezone
-TZ=${TZ}
 
 # Fixed project name
 COMPOSE_PROJECT_NAME=drone-ci
