@@ -54,13 +54,20 @@ DRONE_SECRET=$(</dev/urandom tr -dc A-Za-z0-9 | head -c 28)
 HTTP_PORT=8008
 HTTP_BIND=127.0.0.1
 
+# SQL database configuration
+DBNAME=drone
+DBUSER=drone
+
+# Please use long, random alphanumeric strings (A-Za-z0-9)
+DBPASS=$(</dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+DBROOT=$(</dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+
 # Fixed project name
 COMPOSE_PROJECT_NAME=drone-ci
 
 EOF
 
-# Create data directory for the sqlite database
-# TODO: MySQL/PostgreSQL altenative in configuration
+# Create data directory for Drone
 mkdir -p data
 
 echo "----------------------------"

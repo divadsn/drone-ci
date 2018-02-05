@@ -7,9 +7,10 @@ services:
     ports:
       - ${HTTP_BIND:-0.0.0.0}:${HTTP_PORT:-80}:8000
       - 9000
+    depends_on:
+      - drone-postgres
     volumes:
       - ./data:/var/lib/drone/
-    restart: always
     environment:
       - DRONE_OPEN=true
       - DRONE_ORGS=${DRONE_ORGS}
@@ -18,13 +19,20 @@ services:
       - DRONE_GITHUB=true
       - DRONE_GITHUB_CLIENT=${DRONE_GITHUB_CLIENT}
       - DRONE_GITHUB_SECRET=${DRONE_GITHUB_SECRET}
+      - DRONE_DATABASE_DRIVER=mysql
+      - DRONE_DATABASE_DATASOURCE=mysql://${DBUSER}:${DBPASS}@tcp(mysql:3306)/${DBNAME}?parseTime=true
       - DRONE_SECRET=${DRONE_SECRET}
+
+    restart: always
+    networks:
+      drone-network:
+        aliases:
+          - drone
 
   drone-agent:
     image: drone/agent:0.8.4
 
     command: agent
-    restart: always
     depends_on:
       - drone-server
     volumes:
@@ -32,3 +40,38 @@ services:
     environment:
       - DRONE_SERVER=drone-server:9000
       - DRONE_SECRET=${DRONE_SECRET}
+
+    restart: always
+    networks:
+      drone-network:
+        aliases:
+          - agent
+
+  drone-mysql:
+    image: mariadb:10.2
+
+    volumes:
+      - mysql-vol-1::/var/lib/mysql/
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DBROOT}
+      - MYSQL_DATABASE=${DBNAME}
+      - MYSQL_USER=${DBUSER}
+      - MYSQL_PASSWORD=${DBPASS}
+
+    restart: always
+    networks:
+      drone-network:
+        aliases:
+          - mysql
+    
+
+networks:
+  drone-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.1.0/24
+
+volumes:
+  mysql-vol-1:
