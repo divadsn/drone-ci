@@ -50,6 +50,9 @@ DRONE_ADMIN=johnsmith,janedoe
 # This should be a random string of your choosing and should be kept private.
 DRONE_SECRET=$(</dev/urandom tr -dc A-Za-z0-9 | head -c 28)
 
+# Each agent is able to process one build by default, but you can also increase the number of parallel builds.
+DRONE_MAX_PROCS=1
+
 # You should use HTTPS behind a proxy using NGINX or Apache2
 HTTP_PORT=8008
 HTTP_BIND=127.0.0.1
@@ -60,7 +63,6 @@ COMPOSE_PROJECT_NAME=drone-ci
 EOF
 
 # Create data directory for the sqlite database
-# TODO: MySQL/PostgreSQL altenative in configuration
 mkdir -p data
 
 echo "----------------------------"

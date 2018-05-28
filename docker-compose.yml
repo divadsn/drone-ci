@@ -36,6 +36,7 @@ services:
     environment:
       - DRONE_SERVER=drone-server:9000
       - DRONE_SECRET=${DRONE_SECRET}
+      - DRONE_MAX_PROCS=${DRONE_MAX_PROCS}
 
     restart: always
     networks:
