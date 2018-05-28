@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   drone-server:
-    image: drone/drone:0.8.4
+    image: drone/drone:0.8.5
 
     ports:
       - ${HTTP_BIND:-0.0.0.0}:${HTTP_PORT:-80}:8000
@@ -26,7 +26,7 @@ services:
           - drone
 
   drone-agent:
-    image: drone/agent:0.8.4
+    image: drone/agent:0.8.5
 
     command: agent
     depends_on:
