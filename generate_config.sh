@@ -18,7 +18,7 @@ echo "----------------------------"
 
 if [ -z "$DRONE_HOST" ]; then
   echo "Drone needs to know its own address. You must therefore provide the address in <scheme>://<hostname> format."
-  read -p "Hostname: " -ei "http://ci.example.org" DRONE_SERVER_HOST
+  read -p "Hostname: " -ei "ci.example.org" DRONE_SERVER_HOST
 fi
 
 echo "----------------------------"
@@ -50,7 +50,7 @@ DRONE_USER_CREATE=username:octocat,machine:false,admin:true,token:55f24eb3d61ef6
 
 # Drone server and agents use a shared secret to authenticate communication.
 # This should be a random string of your choosing and should be kept private.
-DRONE_RPC_SERVER=${DRONE_SERVER_HOST}
+DRONE_RPC_SERVER=http://${DRONE_SERVER_HOST}
 DRONE_RPC_SECRET=$(</dev/urandom tr -dc A-Za-z0-9 | head -c 28)
 
 # Each agent is able to process one build by default, but you can also increase the number of parallel builds.
@@ -68,7 +68,6 @@ NETWORK_SUBNET=172.18.1.0/24
 
 # Fixed project name
 COMPOSE_PROJECT_NAME=drone-ci
-
 EOF
 
 # Create data directory for the sqlite database
