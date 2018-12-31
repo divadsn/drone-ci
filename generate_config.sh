@@ -63,6 +63,9 @@ HTTP_BIND=127.0.0.1
 HTTPS_PORT=8043
 HTTPS_BIND=127.0.0.1
 
+# Network subnet
+NETWORK_SUBNET=172.18.1.0/24
+
 # Fixed project name
 COMPOSE_PROJECT_NAME=drone-ci
 
