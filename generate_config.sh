@@ -25,11 +25,21 @@ echo "----------------------------"
 echo "     GitHub OAuth Setup     "
 echo "----------------------------"
 
-if [ -z "$DRONE_GITHUB_CLIENT" ]; then
+if [ -z "$DRONE_GITHUB_CLIENT_ID" ]; then
   echo "You must register Drone with GitHub to obtain the client and secret."
   echo "The authorization callback url must match <scheme>://<host>/authorize"
   read -p "Client ID: " -ei "d428e2c573990bc589d2" DRONE_GITHUB_CLIENT_ID
   read -p "Client secret: " -ei "e72e16c7e42f292c6912e7710c838347ae178b4a" DRONE_GITHUB_CLIENT_SECRET
+fi
+
+
+echo "----------------------------"
+echo "       Database setup       "
+echo "----------------------------"
+
+if [ -z "$DRONE_DATABASE_DRIVER" ]; then
+  echo "Drone requires the use of a database backend for persistence. It uses a sqlite database by default."
+  read -p "Database driver: " -ei "sqlite" DRONE_DATABASE_DRIVER
 fi
 
 cat << EOF > drone.conf
@@ -42,6 +52,9 @@ DRONE_SERVER_PROTO=http
 DRONE_GITHUB_SERVER=https://github.com
 DRONE_GITHUB_CLIENT_ID=${DRONE_GITHUB_CLIENT_ID}
 DRONE_GITHUB_CLIENT_SECRET=${DRONE_GITHUB_CLIENT_SECRET}
+
+# Drone database setup
+DRONE_DATABASE_DRIVER=${DRONE_DATABASE_DRIVER}
 
 # Drone registration is closed by default.
 # This example enables open registration for users that are members of approved GitHub organizations.
@@ -62,6 +75,16 @@ HTTP_PORT=8008
 HTTP_BIND=127.0.0.1
 HTTPS_PORT=8043
 HTTPS_BIND=127.0.0.1
+
+# Database settings
+DATABASE_NAME=drone
+DATABASE_USER=drone
+DATABASE_PASS=$(</dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+DATABASE_ROOT=$(</dev/urandom tr -dc A-Za-z0-9 | head -c 28)
+
+# Drone database setup
+DRONE_DATABASE_DATASOURCE="\${DATABASE_USER}:\${DATABASE_PASS}@tcp(\${DATABASE_HOST}:\${DATABASE_PORT})/drone?parseTime=true"
+DRONE_DATABASE_SECRET=$(openssl rand -hex 16)
 
 # Network subnet
 NETWORK_SUBNET=172.18.1.0/24
