@@ -56,6 +56,7 @@ DRONE_GITHUB_CLIENT_SECRET=${DRONE_GITHUB_CLIENT_SECRET}
 
 # Drone database setup
 DRONE_DATABASE_DRIVER=${DRONE_DATABASE_DRIVER}
+DRONE_DATABASE_SECRET=$(openssl rand -hex 16)
 
 # Drone registration is closed by default.
 # This example enables open registration for users that are members of approved GitHub organizations.
@@ -82,10 +83,6 @@ DATABASE_NAME=drone
 DATABASE_USER=drone
 DATABASE_PASS=$(</dev/urandom tr -dc A-Za-z0-9 | head -c 28)
 DATABASE_ROOT=$(</dev/urandom tr -dc A-Za-z0-9 | head -c 28)
-
-# Drone database setup
-DRONE_DATABASE_DATASOURCE="\${DATABASE_USER}:\${DATABASE_PASS}@tcp(\${DATABASE_HOST}:\${DATABASE_PORT})/drone?parseTime=true"
-DRONE_DATABASE_SECRET=$(openssl rand -hex 16)
 
 # Network subnet
 NETWORK_SUBNET=172.18.1.0/24
