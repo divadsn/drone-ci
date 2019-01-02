@@ -1,2 +1,3 @@
 drone.conf*
 data/*
+cache/*
