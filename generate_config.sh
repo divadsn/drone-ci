@@ -19,6 +19,7 @@ echo "----------------------------"
 if [ -z "$DRONE_HOST" ]; then
   echo "Drone needs to know its own address. You must therefore provide the address in <scheme>://<hostname> format."
   read -p "Hostname: " -ei "ci.example.org" DRONE_SERVER_HOST
+  read -p "Timezone: " -ei "Europe/Berlin" DRONE_TZ
 fi
 
 echo "----------------------------"
@@ -88,6 +89,9 @@ DRONE_DATABASE_SECRET=$(openssl rand -hex 16)
 
 # Network subnet
 NETWORK_SUBNET=172.18.1.0/24
+
+# Your timezone
+TZ=${DRONE_TZ}
 
 # Fixed project name
 COMPOSE_PROJECT_NAME=drone-ci
