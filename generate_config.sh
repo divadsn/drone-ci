@@ -85,7 +85,7 @@ DATABASE_PASS=$(</dev/urandom tr -dc A-Za-z0-9 | head -c 28)
 DATABASE_ROOT=$(</dev/urandom tr -dc A-Za-z0-9 | head -c 28)
 
 # Network subnet
-NETWORK_SUBNET=172.18.1.0/24
+IPV4_NETWORK=172.18.1
 
 # Your timezone
 TZ=${DRONE_TZ}
