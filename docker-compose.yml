@@ -2,7 +2,7 @@ version: '2.1'
 
 services:
   drone-server:
-    image: drone/drone:1.0.0-rc.3
+    image: drone/drone:1.0.0-rc.5
 
     depends_on:
       - drone-mysql
@@ -34,7 +34,7 @@ services:
           - drone
 
   drone-agent:
-    image: drone/agent:1.0.0-rc.3
+    image: drone/agent:1.0.0-rc.5
 
     depends_on:
       - drone-server
