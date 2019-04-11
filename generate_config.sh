@@ -33,16 +33,6 @@ if [ -z "$DRONE_GITHUB_CLIENT_ID" ]; then
   read -p "Client secret: " -ei "e72e16c7e42f292c6912e7710c838347ae178b4a" DRONE_GITHUB_CLIENT_SECRET
 fi
 
-
-echo "----------------------------"
-echo "       Database setup       "
-echo "----------------------------"
-
-if [ -z "$DRONE_DATABASE_DRIVER" ]; then
-  echo "Drone requires the use of a database backend for persistence. It uses a sqlite database by default."
-  read -p "Database driver: " -ei "sqlite" DRONE_DATABASE_DRIVER
-fi
-
 cat << EOF > drone.conf
 # Drone needs to know its own address. You must therefore provide the address in <scheme>://<hostname> format.
 DRONE_SERVER_HOST=${DRONE_SERVER_HOST}
@@ -55,7 +45,7 @@ DRONE_GITHUB_CLIENT_ID=${DRONE_GITHUB_CLIENT_ID}
 DRONE_GITHUB_CLIENT_SECRET=${DRONE_GITHUB_CLIENT_SECRET}
 
 # Drone database setup
-DRONE_DATABASE_DRIVER=${DRONE_DATABASE_DRIVER}
+DRONE_DATABASE_DRIVER=mysql
 DRONE_DATABASE_SECRET=$(openssl rand -hex 16)
 
 # Drone registration is closed by default.
