@@ -55,7 +55,7 @@ services:
           - agent
 
   drone-mysql:
-    image: mariadb:10.2
+    image: mariadb:10.4
 
     volumes:
       - mysql-vol-1:/var/lib/mysql/
